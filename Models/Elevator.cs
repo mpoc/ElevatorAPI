@@ -3,6 +3,8 @@ namespace ElevatorAPI.Models
     public class Elevator
     {
         public int Id { get; set; }
-        public ElevatorStatus Status { get; set; }
+        public DoorStatus DoorStatus { get; set; }
+        public ElevatorStatus ElevatorStatus { get; set; }
+        public int atFloor { get; set; }
     }
 }
