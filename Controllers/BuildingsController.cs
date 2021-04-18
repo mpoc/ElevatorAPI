@@ -73,5 +73,12 @@ namespace ElevatorAPI.Controllers
             await _buildingRepository.Delete(buildingToDelete.BuildingId);
             return NoContent();
         }
+
+        [SwaggerOperation(Summary = "Get elevators for a building")]
+        [HttpDelete("{id}/elevators")]
+        public async Task<IEnumerable<Elevator>> GetElevators(int id)
+        {
+            return await _buildingRepository.GetElevators(id);
+        }
     }
 }
