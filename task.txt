@@ -1,0 +1,13 @@
+Reikia suprogramuoti lifto valdymo web api, su ASP.NET Core.
+
+Public metodai leidžia:
+Iškviesti liftą iš bet kurio aukšto į bet kurį aukštą.
+Gauti realaus laiko informaciją apie prašomo lifto vietą, būseną, judėjimo kryptį.
+Gauti log informaciją apie įvykius su laiko žyme (lifto iškvietimas, durų atsidarymas/užsidarymas ir t.t.).
+Bei lifto judėjimą (t. y. kiekvieną kartą liftui nusileidus/pakilus per vieną aukštą).
+
+Apribojimai
+* Galima konfiguruoti pastato aukštų ir liftų skaičių ( ne mažiau dviejų).
+* Liftas juda 1 aukšto per sekundę greičiu. Durų atsidarymas/užsidarymas trunka 2 sekundes.
+
+Užduotį patalpinti github ir atkreipti dėmesį unit testavimui.
