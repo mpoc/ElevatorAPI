@@ -10,7 +10,7 @@ using ElevatorAPI.Models;
 namespace ElevatorAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/elevators")]
     public class ElevatorsController : ControllerBase
     {
         private readonly IElevatorRepository _elevatorRepository;
@@ -19,18 +19,14 @@ namespace ElevatorAPI.Controllers
             _elevatorRepository = elevatorRepository;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<Elevator>> Get()
-        {
-            return await _elevatorRepository.Get();
-        }
-
+        [SwaggerOperation(Summary = "Get an elevator by id")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Elevator>> Get(int id)
         {
             return await _elevatorRepository.Get(id);
         }
 
+        [SwaggerOperation(Summary = "Create an elevator")]
         [HttpPost]
         public async Task<ActionResult<Elevator>> Post([FromBody] Elevator elevator)
         {
@@ -38,19 +34,7 @@ namespace ElevatorAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = newElevator.Id }, newElevator);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] Elevator elevator)
-        {
-            if (id != elevator.Id)
-            {
-                return BadRequest();
-            }
-
-            await _elevatorRepository.Update(elevator);
-
-            return NoContent();
-        }
-
+        [SwaggerOperation(Summary = "Delete an elevator")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
