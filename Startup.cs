@@ -33,7 +33,9 @@ namespace ElevatorAPI
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddDbContext<ElevatorAPIContext>(o => o.UseSqlite("Data source=database.db"));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
