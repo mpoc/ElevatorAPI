@@ -11,5 +11,6 @@ namespace ElevatorAPI.Models
         }
 
         public DbSet<Elevator> Elevators { get; set; }
+        public DbSet<Building> Buildings { get; set; }
     }
 }
