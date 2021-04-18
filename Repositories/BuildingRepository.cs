@@ -54,7 +54,12 @@ namespace ElevatorAPI.Repositories
 
         public async Task<Building> Get(int id)
         {
-            return await _context.Buildings.FindAsync(id);
+            return await _context.Buildings.Include(b => b.Elevators).FirstOrDefaultAsync(b => b.BuildingId == id);
+        }
+
+        public async Task<IEnumerable<Elevator>> GetElevators(int id)
+        {
+            return await _context.Elevators.Where(e => e.Building.BuildingId == id).ToListAsync();
         }
 
         public async Task Update(Building building)
