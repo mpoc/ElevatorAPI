@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ElevatorAPI.Repositories;
+using ElevatorAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElevatorAPI
 {
@@ -26,7 +29,8 @@ namespace ElevatorAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ElevatorContext>(o => o.useSqlite("Data source=elevators.db"));
+            services.AddScoped<IElevatorRepository, ElevatorRepository>();
+            services.AddDbContext<ElevatorContext>(o => o.UseSqlite("Data source=elevators.db"));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
