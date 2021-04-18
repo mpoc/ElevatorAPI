@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ElevatorAPI.Repositories
 {
-    public class ElevatorRepository : IElevatorRepository
+    public class LogRepository : ILogRepository
     {
         private readonly ElevatorAPIContext _context;
 
-        public ElevatorRepository(ElevatorAPIContext context)
+        public LogRepository(ElevatorAPIContext context)
         {
             _context = context;
         }
@@ -26,13 +26,14 @@ namespace ElevatorAPI.Repositories
             return await _context.Logs.FindAsync(id);
         }
 
+        // Gets all the logs associated with a certain elevator
         public async Task<IEnumerable<Log>> GetByElevator(int elevatorId)
         {
-            return await _context.Logs.Where(log => log.Elevator.Id == elevatorId);
+            return await _context.Logs.Where(log => log.Elevator.Id == elevatorId).ToListAsync();
         }
 
         // Creates a log entry for when an elevator gets called to go from a floor to another floor
-        Task<Log> CreateElevatorCalledEntry(int elevatorId, int fromFloor, int toFloor)
+        public async Task<Log> CreateElevatorCalledEntry(int elevatorId, int fromFloor, int toFloor)
         {
             var elevator = await _context.Elevators.FindAsync(elevatorId);
             Log newLog = new Log
@@ -49,7 +50,7 @@ namespace ElevatorAPI.Repositories
         }
 
         // Creates a log entry for when an elevator doors change status
-        Task<Log> CreateElevatorDoorStatusChangedEntry(int elevatorId, DoorStatus fromDoorStatus, DoorStatus toDoorStatus)
+        public async Task<Log> CreateElevatorDoorStatusChangedEntry(int elevatorId, DoorStatus fromDoorStatus, DoorStatus toDoorStatus)
         {
             var elevator = await _context.Elevators.FindAsync(elevatorId);
             Log newLog = new Log
@@ -66,7 +67,7 @@ namespace ElevatorAPI.Repositories
         }
 
         // Creates a log entry for when an elevator arrives at a certain floor (toFloor)
-        Task<Log> CreateElevatorMovedEntry(int elevatorId, int fromFloor, int toFloor)
+        public async Task<Log> CreateElevatorMovedEntry(int elevatorId, int fromFloor, int toFloor)
         {
             var elevator = await _context.Elevators.FindAsync(elevatorId);
             Log newLog = new Log
