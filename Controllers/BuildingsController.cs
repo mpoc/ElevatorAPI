@@ -46,19 +46,19 @@ namespace ElevatorAPI.Controllers
             return CreatedAtAction(nameof(CreateWithElevators), new { id = newBuilding.BuildingId }, newBuilding);
         }
 
-        [SwaggerOperation(Summary = "Edit a building")]
-        [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] Building building)
-        {
-            if (id != building.Id)
-            {
-                return BadRequest();
-            }
+        // [SwaggerOperation(Summary = "Edit a building")]
+        // [HttpPut]
+        // public async Task<ActionResult> Put(int id, [FromBody] Building building)
+        // {
+        //     if (id != building.BuildingId)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            await _buildingRepository.Update(building);
+        //     await _buildingRepository.Update(building);
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         [SwaggerOperation(Summary = "Delete a building")]
         [HttpDelete("{id}")]
