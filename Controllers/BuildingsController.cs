@@ -1,3 +1,4 @@
+using System.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,14 @@ namespace ElevatorAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Building>> Get(int id)
         {
-            return await _buildingRepository.Get(id);
+            var building = await _buildingRepository.Get(id);
+
+            if (building == null)
+            {
+                return NotFound();
+            }
+            
+            return building;
         }
 
         [SwaggerOperation(Summary = "Create a building with a certain number of elevators")]
