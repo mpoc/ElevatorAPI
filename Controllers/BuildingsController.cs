@@ -7,11 +7,12 @@ using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using ElevatorAPI.Repositories;
 using ElevatorAPI.Models;
+using ElevatorAPI.Resources;
 
 namespace ElevatorAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/buildings")]
     public class BuildingsController : ControllerBase
     {
         private readonly IBuildingRepository _buildingRepository;
@@ -34,12 +35,23 @@ namespace ElevatorAPI.Controllers
             return await _buildingRepository.Get(id);
         }
 
+        [SwaggerOperation(Summary = "Create a building with a certain number of elevators")]
         [HttpPost]
-        public async Task<ActionResult<Building>> Post([FromBody] Building building)
+        public async Task<ActionResult<Building>> CreateWithElevators([FromBody] CreateBuildingWithElevatorsResource resource)
         {
-            var newBuilding = await _buildingRepository.Create(building);
-            return CreatedAtAction(nameof(Get), new { id = newBuilding.Id }, newBuilding);
+            if (!ModelState.IsValid)
+		        return BadRequest();
+
+            var newBuilding = await _buildingRepository.CreateWithElevators(resource);
+            return CreatedAtAction(nameof(CreateWithElevators), new { id = newBuilding.Id }, newBuilding);
         }
+
+        // [HttpPost]
+        // public async Task<ActionResult<Building>> Post([FromBody] Building building)
+        // {
+        //     var newBuilding = await _buildingRepository.Create(building);
+        //     return CreatedAtAction(nameof(Get), new { id = newBuilding.Id }, newBuilding);
+        // }
 
         [HttpPut]
         public async Task<ActionResult> Put(int id, [FromBody] Building building)

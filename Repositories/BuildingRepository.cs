@@ -1,4 +1,5 @@
 using ElevatorAPI.Models;
+using ElevatorAPI.Resources;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,21 @@ namespace ElevatorAPI.Repositories
             _context.Buildings.Add(building);
             await _context.SaveChangesAsync();
 
+            return building;
+        }
+
+        public async Task<Building> CreateWithElevators(CreateBuildingWithElevatorsResource resource)
+        {
+            var building = resource.Building;
+            var elevators = Enumerable.Range(0, resource.NumberOfElevators).Select(x => new Elevator
+            {
+                DoorStatus = DoorStatus.Closed,
+                ElevatorStatus = ElevatorStatus.Idle,
+                Building = building,
+                AtFloor = 0,
+            }).ToList();
+            _context.AddRange(elevators);
+            await _context.SaveChangesAsync();
             return building;
         }
 

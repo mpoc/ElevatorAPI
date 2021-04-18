@@ -1,4 +1,5 @@
 using ElevatorAPI.Models;
+using ElevatorAPI.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace ElevatorAPI.Repositories
         Task<IEnumerable<Building>> Get();
         Task<Building> Get(int id);
         Task<Building> Create(Building building);
+        Task<Building> CreateWithElevators(CreateBuildingWithElevatorsResource resource);
         Task Update(Building building);
         Task Delete(int id);
     }
