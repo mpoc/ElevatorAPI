@@ -20,26 +20,26 @@ namespace ElevatorAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Elevator>> GetElevators()
+        public async Task<IEnumerable<Elevator>> Get()
         {
             return await _elevatorRepository.Get();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Elevator>> GetElevators(int id)
+        public async Task<ActionResult<Elevator>> Get(int id)
         {
             return await _elevatorRepository.Get(id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Elevator>> PostElevators([FromBody] Elevator elevator)
+        public async Task<ActionResult<Elevator>> Post([FromBody] Elevator elevator)
         {
             var newElevator = await _elevatorRepository.Create(elevator);
-            return CreatedAtAction(nameof(GetElevators), new { id = newElevator.Id }, newElevator);
+            return CreatedAtAction(nameof(Get), new { id = newElevator.Id }, newElevator);
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutElevators(int id, [FromBody] Elevator elevator)
+        public async Task<ActionResult> Put(int id, [FromBody] Elevator elevator)
         {
             if (id != elevator.Id)
             {
