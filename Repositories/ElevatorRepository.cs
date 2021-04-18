@@ -9,9 +9,9 @@ namespace ElevatorAPI.Repositories
 {
     public class ElevatorRepository : IElevatorRepository
     {
-        private readonly ElevatorContext _context;
+        private readonly ElevatorAPIContext _context;
 
-        public ElevatorRepository(ElevatorContext context)
+        public ElevatorRepository(ElevatorAPIContext context)
         {
             _context = context;
         }

@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ElevatorAPI.Models
 {
-    public class ElevatorContext : DbContext
+    public class ElevatorAPIContext : DbContext
     {
-        public ElevatorContext(DbContextOptions<ElevatorContext> options)
+        public ElevatorAPIContext(DbContextOptions<ElevatorAPIContext> options)
             : base(options)
         {
             Database.EnsureCreated();
