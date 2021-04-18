@@ -39,7 +39,7 @@ namespace ElevatorAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutBooks(int id, [FromBody] Elevator elevator)
+        public async Task<ActionResult> PutElevators(int id, [FromBody] Elevator elevator)
         {
             if (id != elevator.Id)
             {
