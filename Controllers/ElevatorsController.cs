@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 using ElevatorAPI.Repositories;
 using ElevatorAPI.Models;
 
@@ -23,15 +24,14 @@ namespace ElevatorAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Elevator>> Get(int id)
         {
-            return await _elevatorRepository.Get(id);
-        }
+            var elevator = await _elevatorRepository.Get(id);
 
-        [SwaggerOperation(Summary = "Create an elevator")]
-        [HttpPost]
-        public async Task<ActionResult<Elevator>> Post([FromBody] Elevator elevator)
-        {
-            var newElevator = await _elevatorRepository.Create(elevator);
-            return CreatedAtAction(nameof(Get), new { id = newElevator.Id }, newElevator);
+            if (elevator == null)
+            {
+                return NotFound();
+            }
+
+            return elevator;
         }
 
         [SwaggerOperation(Summary = "Delete an elevator")]
