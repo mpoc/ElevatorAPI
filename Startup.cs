@@ -30,6 +30,7 @@ namespace ElevatorAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IElevatorRepository, ElevatorRepository>();
+            services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddDbContext<ElevatorAPIContext>(o => o.UseSqlite("Data source=database.db"));
 
             services.AddControllers();
