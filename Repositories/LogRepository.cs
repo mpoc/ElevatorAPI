@@ -29,7 +29,7 @@ namespace ElevatorAPI.Repositories
         // Gets all the logs associated with a certain elevator
         public async Task<IEnumerable<Log>> GetByElevator(int elevatorId)
         {
-            return await _context.Logs.Where(log => log.Elevator.Id == elevatorId).ToListAsync();
+            return await _context.Logs.Where(log => log.Elevator.ElevatorId == elevatorId).ToListAsync();
         }
 
         // Creates a log entry for when an elevator gets called to go from a floor to another floor
@@ -40,7 +40,7 @@ namespace ElevatorAPI.Repositories
             {
                 Date = DateTime.Now,
                 Elevator = elevator,
-                Info = $"Elevator id {elevator.Id} has been called from floor {fromFloor} to {toFloor}."
+                Info = $"Elevator id {elevator.ElevatorId} has been called from floor {fromFloor} to {toFloor}."
             };
 
             _context.Logs.Add(newLog);
@@ -57,7 +57,7 @@ namespace ElevatorAPI.Repositories
             {
                 Date = DateTime.Now,
                 Elevator = elevator,
-                Info = $"Elevator id {elevator.Id} doors changed from {fromDoorStatus} to {toDoorStatus}."
+                Info = $"Elevator id {elevator.ElevatorId} doors changed from {fromDoorStatus} to {toDoorStatus}."
             };
 
             _context.Logs.Add(newLog);
@@ -74,7 +74,7 @@ namespace ElevatorAPI.Repositories
             {
                 Date = DateTime.Now,
                 Elevator = elevator,
-                Info = $"Elevator id {elevator.Id} moved from floor {fromFloor} to {toFloor}."
+                Info = $"Elevator id {elevator.ElevatorId} moved from floor {fromFloor} to {toFloor}."
             };
 
             _context.Logs.Add(newLog);

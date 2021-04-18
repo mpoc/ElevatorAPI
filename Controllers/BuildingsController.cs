@@ -43,7 +43,7 @@ namespace ElevatorAPI.Controllers
 		        return BadRequest();
 
             var newBuilding = await _buildingRepository.CreateWithElevators(resource);
-            return CreatedAtAction(nameof(CreateWithElevators), new { id = newBuilding.Id }, newBuilding);
+            return CreatedAtAction(nameof(CreateWithElevators), new { id = newBuilding.BuildingId }, newBuilding);
         }
 
         [SwaggerOperation(Summary = "Edit a building")]
@@ -70,7 +70,7 @@ namespace ElevatorAPI.Controllers
                 return NotFound();
             }
 
-            await _buildingRepository.Delete(buildingToDelete.Id);
+            await _buildingRepository.Delete(buildingToDelete.BuildingId);
             return NoContent();
         }
     }

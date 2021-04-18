@@ -44,7 +44,7 @@ namespace ElevatorAPI.Controllers
                 return NotFound();
             }
 
-            await _elevatorRepository.Delete(elevatorToDelete.Id);
+            await _elevatorRepository.Delete(elevatorToDelete.ElevatorId);
             return NoContent();
         }
     }
