@@ -6,7 +6,9 @@ namespace ElevatorAPI.Models
     public class Building
     {
         [Key]
-        public int Id { get; set; }
+        public int BuildingId { get; set; }
         public int Height { get; set; }
+
+        public List<Elevator> Elevators { get; set; }
     }
 }
