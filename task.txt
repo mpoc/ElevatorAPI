@@ -7,7 +7,7 @@ Gauti log informaciją apie įvykius su laiko žyme (lifto iškvietimas, durų a
 Bei lifto judėjimą (t. y. kiekvieną kartą liftui nusileidus/pakilus per vieną aukštą).
 
 Apribojimai
-* Galima konfiguruoti pastato aukštų ir liftų skaičių ( ne mažiau dviejų).
+* Galima konfiguruoti pastato aukštų ir liftų skaičių (ne mažiau dviejų).
 * Liftas juda 1 aukšto per sekundę greičiu. Durų atsidarymas/užsidarymas trunka 2 sekundes.
 
 Užduotį patalpinti github ir atkreipti dėmesį unit testavimui.
