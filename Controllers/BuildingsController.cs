@@ -46,13 +46,6 @@ namespace ElevatorAPI.Controllers
             return CreatedAtAction(nameof(CreateWithElevators), new { id = newBuilding.Id }, newBuilding);
         }
 
-        // [HttpPost]
-        // public async Task<ActionResult<Building>> Post([FromBody] Building building)
-        // {
-        //     var newBuilding = await _buildingRepository.Create(building);
-        //     return CreatedAtAction(nameof(Get), new { id = newBuilding.Id }, newBuilding);
-        // }
-
         [HttpPut]
         public async Task<ActionResult> Put(int id, [FromBody] Building building)
         {
