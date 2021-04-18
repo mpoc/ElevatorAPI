@@ -5,6 +5,7 @@ namespace ElevatorAPI.Models
         public int Id { get; set; }
         public DoorStatus DoorStatus { get; set; }
         public ElevatorStatus ElevatorStatus { get; set; }
+        public Building Building { get; set; }
         public int AtFloor { get; set; }
     }
 }

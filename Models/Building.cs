@@ -6,6 +6,5 @@ namespace ElevatorAPI.Models
     {
         public int Id { get; set; }
         public int Height { get; set; }
-        public IEnumerable<Elevator> Elevators { get; set; }
     }
 }
