@@ -46,6 +46,7 @@ namespace ElevatorAPI.Controllers
             return CreatedAtAction(nameof(CreateWithElevators), new { id = newBuilding.Id }, newBuilding);
         }
 
+        [SwaggerOperation(Summary = "Edit a building")]
         [HttpPut]
         public async Task<ActionResult> Put(int id, [FromBody] Building building)
         {
@@ -59,6 +60,7 @@ namespace ElevatorAPI.Controllers
             return NoContent();
         }
 
+        [SwaggerOperation(Summary = "Delete a building")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
