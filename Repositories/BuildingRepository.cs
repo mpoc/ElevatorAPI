@@ -27,7 +27,9 @@ namespace ElevatorAPI.Repositories
 
         public async Task<Building> CreateWithElevators(CreateBuildingWithElevatorsResource resource)
         {
-            var building = resource.Building;
+            var building = new Building {
+                Height = resource.Building.Height
+            };
             var elevators = Enumerable.Range(0, resource.NumberOfElevators).Select(x => new Elevator
             {
                 DoorStatus = DoorStatus.Closed,

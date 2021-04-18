@@ -10,6 +10,6 @@ namespace ElevatorAPI.Resources
         public int NumberOfElevators { get; set; }
 
         [Required]
-        public Building Building { get; set; }
+        public BuildingDTO Building { get; set; }
     }
 }
