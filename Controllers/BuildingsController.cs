@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 using ElevatorAPI.Repositories;
 using ElevatorAPI.Models;
 
@@ -19,12 +20,14 @@ namespace ElevatorAPI.Controllers
             _buildingRepository = buildingRepository;
         }
 
+        [SwaggerOperation(Summary = "Get all buildings")]
         [HttpGet]
         public async Task<IEnumerable<Building>> Get()
         {
             return await _buildingRepository.Get();
         }
 
+        [SwaggerOperation(Summary = "Get a building by id")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Building>> Get(int id)
         {
