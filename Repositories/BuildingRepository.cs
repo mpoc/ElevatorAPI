@@ -34,8 +34,9 @@ namespace ElevatorAPI.Repositories
             {
                 DoorStatus = DoorStatus.Closed,
                 ElevatorStatus = ElevatorStatus.Idle,
-                Building = building,
                 AtFloor = 0,
+                Busy = false,
+                Building = building
             }).ToList();
             _context.AddRange(elevators);
             await _context.SaveChangesAsync();
