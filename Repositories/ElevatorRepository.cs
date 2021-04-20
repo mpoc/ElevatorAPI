@@ -41,6 +41,11 @@ namespace ElevatorAPI.Repositories
             return await _context.Elevators.FindAsync(id);
         }
 
+        public async Task<Elevator> GetWithBuilding(int id)
+        {
+            return await _context.Elevators.Include(e => e.Building).FirstOrDefaultAsync(e => e.ElevatorId == id);
+        }
+
         public async Task Update(Elevator elevator)
         {
             _context.Entry(elevator).State = EntityState.Modified;
