@@ -11,6 +11,7 @@ namespace ElevatorAPI.Repositories
         Task<IEnumerable<Elevator>> Get();
         Task<Elevator> Get(int id);
         Task<Elevator> GetWithBuilding(int id);
+        Task CallToFloor(Elevator elevator, int from, int to, IEnumerator<ElevatorActionStage> stage);
         Task<Elevator> Create(Elevator elevator);
         Task Update(Elevator elevator);
         Task Delete(int id);
