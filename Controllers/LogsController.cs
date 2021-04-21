@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using ElevatorAPI.Repositories;
 using ElevatorAPI.Models;
+using ElevatorAPI.Models.DTO;
 using ElevatorAPI.Resources;
 
 namespace ElevatorAPI.Controllers
@@ -25,11 +26,13 @@ namespace ElevatorAPI.Controllers
 
         [SwaggerOperation(Summary = "Get all logs OR get all logs for a specific elevator id")]
         [HttpGet]
-        public async Task<IEnumerable<Log>> Get([FromQuery] int? elevatorId)
+        public async Task<IEnumerable<LogDTO>> Get([FromQuery] int? elevatorId)
         {
-            return elevatorId.HasValue
+            var logs = elevatorId.HasValue
                 ? await _logRepository.GetByElevator((int)elevatorId)
                 : await _logRepository.GetWithElevators();
+
+            return logs.Select(log => new LogDTO(log, true));
         }
     }
 }
