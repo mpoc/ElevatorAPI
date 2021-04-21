@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using ElevatorAPI.Repositories;
 using ElevatorAPI.Models;
+using ElevatorAPI.Models.DTO;
 using ElevatorAPI.Services;
 
 namespace ElevatorAPI.Controllers
@@ -23,7 +24,7 @@ namespace ElevatorAPI.Controllers
 
         [SwaggerOperation(Summary = "Get an elevator by id")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Elevator>> Get(int id)
+        public async Task<ActionResult<ElevatorDTO>> Get(int id)
         {
             var elevator = await _elevatorManagerService.GetWithBuilding(id);
 
@@ -32,7 +33,7 @@ namespace ElevatorAPI.Controllers
                 return NotFound();
             }
 
-            return elevator;
+            return new ElevatorDTO(elevator, true);
         }
 
         [SwaggerOperation(Summary = "Delete an elevator")]

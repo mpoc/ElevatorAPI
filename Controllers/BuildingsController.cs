@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using ElevatorAPI.Repositories;
 using ElevatorAPI.Models;
+using ElevatorAPI.Models.DTO;
 using ElevatorAPI.Resources;
 
 namespace ElevatorAPI.Controllers
@@ -24,23 +25,24 @@ namespace ElevatorAPI.Controllers
 
         [SwaggerOperation(Summary = "Get all buildings")]
         [HttpGet]
-        public async Task<IEnumerable<Building>> Get()
+        public async Task<IEnumerable<BuildingDTO>> Get()
         {
-            return await _buildingRepository.Get();
+            var buildings = await _buildingRepository.GetWithElevators();
+            return buildings.Select(b => new BuildingDTO(b, true));
         }
 
         [SwaggerOperation(Summary = "Get a building by id")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Building>> Get(int id)
+        public async Task<ActionResult<BuildingDTO>> Get(int id)
         {
-            var building = await _buildingRepository.Get(id);
+            var building = await _buildingRepository.GetWithElevators(id);
 
             if (building == null)
             {
                 return NotFound();
             }
             
-            return building;
+            return new BuildingDTO(building, true);
         }
 
         [SwaggerOperation(Summary = "Create a building with a certain number of elevators")]
@@ -84,9 +86,10 @@ namespace ElevatorAPI.Controllers
 
         [SwaggerOperation(Summary = "Get elevators for a building")]
         [HttpDelete("{id}/elevators")]
-        public async Task<IEnumerable<Elevator>> GetElevators(int id)
+        public async Task<IEnumerable<ElevatorDTO>> GetElevators(int id)
         {
-            return await _buildingRepository.GetElevators(id);
+            var elevators = await _buildingRepository.GetElevators(id);
+            return elevators.Select(e => new ElevatorDTO(e, false));
         }
     }
 }
