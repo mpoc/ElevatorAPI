@@ -47,13 +47,13 @@ namespace ElevatorAPI.Controllers
 
         [SwaggerOperation(Summary = "Create a building with a certain number of elevators")]
         [HttpPost]
-        public async Task<ActionResult<Building>> CreateWithElevators([FromBody] CreateBuildingWithElevatorsResource resource)
+        public async Task<ActionResult<BuildingDTO>> CreateWithElevators([FromBody] CreateBuildingWithElevatorsResource resource)
         {
             if (!ModelState.IsValid)
 		        return BadRequest();
 
             var newBuilding = await _buildingRepository.CreateWithElevators(resource);
-            return CreatedAtAction(nameof(CreateWithElevators), new { id = newBuilding.BuildingId }, newBuilding);
+            return CreatedAtAction(nameof(CreateWithElevators), new { id = newBuilding.BuildingId }, new BuildingDTO(newBuilding, true));
         }
 
         // [SwaggerOperation(Summary = "Edit a building")]
