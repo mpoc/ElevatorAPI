@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using ElevatorAPI.Models;
 
 namespace ElevatorAPI.Resources
 {
@@ -10,6 +9,6 @@ namespace ElevatorAPI.Resources
         public int NumberOfElevators { get; set; }
 
         [Required]
-        public BuildingDTO Building { get; set; }
+        public CreateBuildingResource Building { get; set; }
     }
 }
