@@ -1,5 +1,4 @@
 using ElevatorAPI.Models;
-using ElevatorAPI.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
