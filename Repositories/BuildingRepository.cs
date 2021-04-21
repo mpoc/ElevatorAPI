@@ -30,7 +30,14 @@ namespace ElevatorAPI.Repositories
             var building = new Building {
                 Height = resource.Building.Height
             };
-            var elevators = Enumerable.Range(0, resource.NumberOfElevators).Select(x => new Elevator(building)).ToList();
+            var elevators = Enumerable.Range(0, resource.NumberOfElevators).Select(x => new Elevator
+            {
+                DoorStatus = DoorStatus.Closed,
+                ElevatorStatus = ElevatorStatus.Idle,
+                AtFloor = 0,
+                Busy = false,
+                Building = building
+            }).ToList();
             _context.AddRange(elevators);
             await _context.SaveChangesAsync();
             return building;
