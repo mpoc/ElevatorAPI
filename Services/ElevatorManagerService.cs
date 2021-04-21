@@ -114,21 +114,13 @@ namespace ElevatorAPI.Services
                     else if (elevator.AtFloor < from)
                     {
                         // We are lower than the 'from' floor
-
                         await Move(elevator, ElevatorMoveCommand.Up);
-
-                        // Add log entry here
-
                         await CallToFloor(elevator, from, to, stage);
                     }
                     else if (elevator.AtFloor > from)
                     {
                         // We are higher than the 'from' floor
-
                         await Move(elevator, ElevatorMoveCommand.Down);
-
-                        // Add log entry here
-
                         await CallToFloor(elevator, from, to, stage);
                     }
                     break;
@@ -165,21 +157,13 @@ namespace ElevatorAPI.Services
                     else if (elevator.AtFloor < to)
                     {
                         // We are lower than the 'to' floor
-
                         await Move(elevator, ElevatorMoveCommand.Up);
-
-                        // Add log entry here
-
                         await CallToFloor(elevator, from, to, stage);
                     }
                     else if (elevator.AtFloor > to)
                     {
                         // We are higher than the 'to' floor
-
                         await Move(elevator, ElevatorMoveCommand.Down);
-
-                        // Add log entry here
-
                         await CallToFloor(elevator, from, to, stage);
                     }
                     break;
