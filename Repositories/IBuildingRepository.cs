@@ -10,7 +10,9 @@ namespace ElevatorAPI.Repositories
     public interface IBuildingRepository
     {
         Task<IEnumerable<Building>> Get();
+        Task<IEnumerable<Building>> GetWithElevators();
         Task<Building> Get(int id);
+        Task<Building> GetWithElevators(int id);
         Task<IEnumerable<Elevator>> GetElevators(int id);
         Task<Building> Create(Building building);
         Task<Building> CreateWithElevators(CreateBuildingWithElevatorsResource resource);
