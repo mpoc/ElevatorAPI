@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using ElevatorAPI.Repositories;
 using ElevatorAPI.Models;
+using ElevatorAPI.Services;
 
 namespace ElevatorAPI.Controllers
 {
@@ -14,17 +15,17 @@ namespace ElevatorAPI.Controllers
     [Route("api/elevators")]
     public class ElevatorsController : ControllerBase
     {
-        private readonly IElevatorRepository _elevatorRepository;
+        private readonly IElevatorManagerService _elevatorManagerService;
 
-        public ElevatorsController(IElevatorRepository elevatorRepository) {
-            _elevatorRepository = elevatorRepository;
+        public ElevatorsController(IElevatorManagerService elevatorManagerService) {
+            _elevatorManagerService = elevatorManagerService;
         }
 
         [SwaggerOperation(Summary = "Get an elevator by id")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Elevator>> Get(int id)
         {
-            var elevator = await _elevatorRepository.Get(id);
+            var elevator = await _elevatorManagerService.Get(id);
 
             if (elevator == null)
             {
@@ -38,13 +39,13 @@ namespace ElevatorAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var elevatorToDelete = await _elevatorRepository.Get(id);
+            var elevatorToDelete = await _elevatorManagerService.Get(id);
             if (elevatorToDelete == null)
             {
                 return NotFound();
             }
 
-            await _elevatorRepository.Delete(elevatorToDelete.ElevatorId);
+            await _elevatorManagerService.Delete(elevatorToDelete.ElevatorId);
             return NoContent();
         }
 
@@ -52,7 +53,7 @@ namespace ElevatorAPI.Controllers
         [HttpGet("{id}/call")]
         public async Task<ActionResult> CallElevator(int id, [FromQuery] int from, [FromQuery] int to)
         {
-            var elevator = await _elevatorRepository.GetWithBuilding(id);
+            var elevator = await _elevatorManagerService.GetWithBuilding(id);
 
             // No elevator with such id
             if (elevator == null)
@@ -96,7 +97,7 @@ namespace ElevatorAPI.Controllers
 
             // Set busy and save
             elevator.Busy = true;
-            await _elevatorRepository.Update(elevator);
+            await _elevatorManagerService.Update(elevator);
 
             // Go from the specified floor to the specified floor. The exact actions that will happen:
             // 1. Ensure the elevator door is closed
@@ -108,11 +109,11 @@ namespace ElevatorAPI.Controllers
             // 7. Open door
             // 8. Wait for 1 second to allow people to alight the elevator
             // 9. Close door
-            await _elevatorRepository.CallToFloor(elevator, from, to, elevatorActionsEnumerator);
+            await _elevatorManagerService.CallToFloor(elevator, from, to, elevatorActionsEnumerator);
 
             // Set not busy and save
             elevator.Busy = false;
-            await _elevatorRepository.Update(elevator);
+            await _elevatorManagerService.Update(elevator);
 
             return Ok();
         }

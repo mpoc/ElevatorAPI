@@ -32,64 +32,40 @@ namespace ElevatorAPI.Repositories
             return await _context.Logs.Where(log => log.Elevator.ElevatorId == elevatorId).ToListAsync();
         }
 
+        // Creates new log entry for an elevator with a specified message
+        private async Task<Log> CreateLogEntry(Elevator elevator, string message)
+        {
+            Log newLog = new Log
+            {
+                Date = DateTime.Now,
+                Elevator = elevator,
+                Info = message
+            };
+
+            _context.Logs.Add(newLog);
+            await _context.SaveChangesAsync();
+
+            return newLog;
+        }
+
         // Creates a log entry for when an elevator gets called to go from a floor to another floor
-        public async Task<Log> CreateElevatorCalledEntry(int elevatorId, int fromFloor, int toFloor)
+        public async Task<Log> CreateElevatorCalledLogEntry(Elevator elevator, int fromFloor, int toFloor)
         {
-            var elevator = await _context.Elevators.FindAsync(elevatorId);
-            Log newLog = new Log
-            {
-                Date = DateTime.Now,
-                Elevator = elevator,
-                Info = $"Elevator id {elevator.ElevatorId} has been called from floor {fromFloor} to {toFloor}."
-            };
-
-            _context.Logs.Add(newLog);
-            await _context.SaveChangesAsync();
-
-            return newLog;
+            return await CreateLogEntry(elevator, $"Elevator has been called from floor {fromFloor} to {toFloor}.");
         }
 
-        // Creates a log entry for when an elevator doors change status
-        public async Task<Log> CreateElevatorDoorStatusChangedEntry(int elevatorId, DoorStatus fromDoorStatus, DoorStatus toDoorStatus)
+        // Creates a log entry whenever elevator door status is changed
+        public async Task<Log> CreateElevatorDoorStatusChangeLogEntry(Elevator elevator, DoorStatus fromStatus, DoorStatus toStatus)
         {
-            var elevator = await _context.Elevators.FindAsync(elevatorId);
-            Log newLog = new Log
-            {
-                Date = DateTime.Now,
-                Elevator = elevator,
-                Info = $"Elevator id {elevator.ElevatorId} doors changed from {fromDoorStatus} to {toDoorStatus}."
-            };
-
-            _context.Logs.Add(newLog);
-            await _context.SaveChangesAsync();
-
-            return newLog;
+            return await CreateLogEntry(elevator, $"Elevator door status changed from {fromStatus} to {toStatus}.");
         }
 
-        // Creates a log entry for when an elevator arrives at a certain floor (toFloor)
-        public async Task<Log> CreateElevatorMovedEntry(int elevatorId, int fromFloor, int toFloor)
+        // Creates a log entry whenever an elevator moves to a floor
+        public async Task<Log> CreateElevatorMovedEntry(Elevator elevator, int fromFloor, int toFloor)
         {
-            var elevator = await _context.Elevators.FindAsync(elevatorId);
-            Log newLog = new Log
-            {
-                Date = DateTime.Now,
-                Elevator = elevator,
-                Info = $"Elevator id {elevator.ElevatorId} moved from floor {fromFloor} to {toFloor}."
-            };
-
-            _context.Logs.Add(newLog);
-            await _context.SaveChangesAsync();
-
-            return newLog;
+            return await CreateLogEntry(elevator, $"Elevator moved from floor {fromFloor} to {toFloor}.");
         }
 
-        // public async Task<Log> Create(Log log)
-        // {
-        //     _context.Logs.Add(log);
-        //     await _context.SaveChangesAsync();
-
-        //     return log;
-        // }
 
         public async Task Delete(int id)
         {

@@ -1,5 +1,6 @@
 using System.Reflection.Metadata;
 using ElevatorAPI.Models;
+using ElevatorAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,49 +8,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace ElevatorAPI.Repositories
+namespace ElevatorAPI.Services
 {
-    public class ElevatorManagerRepository : IElevatorManagerRepository
+    public class ElevatorManagerService : IElevatorManagerService
     {
-        private readonly ElevatorAPIContext _context;
+        private readonly ILogRepository _logRepository;
+        private readonly IElevatorRepository _elevatorRepository;
 
-        public ElevatorManagerRepository(ElevatorAPIContext context)
+        public ElevatorManagerService(ILogRepository logRepository, IElevatorRepository elevatorRepository)
         {
-            _context = context;
-        }
-
-        // Creates new log entry for an elevator with a specified message
-        private async Task<Log> CreateLogEntry(Elevator elevator, string message)
-        {
-            Log newLog = new Log
-            {
-                Date = DateTime.Now,
-                Elevator = elevator,
-                Info = message
-            };
-
-            _context.Logs.Add(newLog);
-            await _context.SaveChangesAsync();
-
-            return newLog;
-        }
-
-        // Creates a log entry for when an elevator gets called to go from a floor to another floor
-        private async Task<Log> CreateElevatorCalledLogEntry(Elevator elevator, int fromFloor, int toFloor)
-        {
-            return await CreateLogEntry(elevator, $"Elevator has been called from floor {fromFloor} to {toFloor}.");
-        }
-
-        // Creates a log entry whenever elevator door status is changed
-        private async Task<Log> CreateElevatorDoorStatusChangeLogEntry(Elevator elevator, DoorStatus fromStatus, DoorStatus toStatus)
-        {
-            return await CreateLogEntry(elevator, $"Elevator door status changed from {fromStatus} to {toStatus}.");
-        }
-
-        // Creates a log entry whenever an elevator moves to a floor
-        public async Task<Log> CreateElevatorMovedEntry(Elevator elevator, int fromFloor, int toFloor)
-        {
-            return await CreateLogEntry(elevator, $"Elevator moved from floor {fromFloor} to {toFloor}.");
+            _logRepository = logRepository;
+            _elevatorRepository = elevatorRepository;
         }
 
         // Set door status and save
@@ -60,11 +29,10 @@ namespace ElevatorAPI.Repositories
 
             // Change
             elevator.DoorStatus = status;
-            _context.Entry(elevator).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _elevatorRepository.Update(elevator);
 
             // Log
-            await CreateElevatorDoorStatusChangeLogEntry(elevator, oldStatus, status);
+            await _logRepository.CreateElevatorDoorStatusChangeLogEntry(elevator, oldStatus, status);
         }
 
         // Open or close door
@@ -99,8 +67,7 @@ namespace ElevatorAPI.Repositories
 
             // Set and save
             elevator.ElevatorStatus = status;
-            _context.Entry(elevator).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _elevatorRepository.Update(elevator);
 
             // Wait 1 second
             await Task.Delay(1000);
@@ -110,11 +77,10 @@ namespace ElevatorAPI.Repositories
 
             // Set and save the updated floor
             elevator.AtFloor += floorModifier;
-            _context.Entry(elevator).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _elevatorRepository.Update(elevator);
 
             // Log
-            await CreateElevatorMovedEntry(elevator, oldFloor, elevator.AtFloor);
+            await _logRepository.CreateElevatorMovedEntry(elevator, oldFloor, elevator.AtFloor);
         }
 
         public async Task CallToFloor(Elevator elevator, int from, int to, IEnumerator<ElevatorActionStage> stage)
@@ -122,7 +88,7 @@ namespace ElevatorAPI.Repositories
             switch (stage.Current)
             {
                 case ElevatorActionStage.Begin:
-                    await CreateElevatorCalledLogEntry(elevator, from, to);
+                    await _logRepository.CreateElevatorCalledLogEntry(elevator, from, to);
 
                     stage.MoveNext();
                     await CallToFloor(elevator, from, to, stage);
@@ -140,8 +106,7 @@ namespace ElevatorAPI.Repositories
 
                         // Set and save
                         elevator.ElevatorStatus = ElevatorStatus.Idle;
-                        _context.Entry(elevator).State = EntityState.Modified;
-                        await _context.SaveChangesAsync();
+                        await _elevatorRepository.Update(elevator);
 
                         stage.MoveNext();
                         await CallToFloor(elevator, from, to, stage);
@@ -192,8 +157,7 @@ namespace ElevatorAPI.Repositories
 
                         // Set and save
                         elevator.ElevatorStatus = ElevatorStatus.Idle;
-                        _context.Entry(elevator).State = EntityState.Modified;
-                        await _context.SaveChangesAsync();
+                        await _elevatorRepository.Update(elevator);
 
                         stage.MoveNext();
                         await CallToFloor(elevator, from, to, stage);
@@ -243,5 +207,15 @@ namespace ElevatorAPI.Repositories
                     throw new Exception($"Invalid elevator action stage");
             }
         }
+
+        // Below we just proxy the elevator repository methods because the
+        // elevator manager service will be the only service injected into
+        // elevators controller
+        public async Task<IEnumerable<Elevator>> Get() => await _elevatorRepository.Get();
+        public async Task<Elevator> Get(int id) => await _elevatorRepository.Get(id);
+        public async Task<Elevator> GetWithBuilding(int id) => await _elevatorRepository.GetWithBuilding(id);
+        public async Task<Elevator> Create(Elevator elevator) => await _elevatorRepository.Create(elevator);
+        public async Task Update(Elevator elevator) => await _elevatorRepository.Update(elevator);
+        public async Task Delete(int id) => await _elevatorRepository.Delete(id);
     }
 }
