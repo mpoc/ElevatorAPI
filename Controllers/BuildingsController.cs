@@ -85,7 +85,7 @@ namespace ElevatorAPI.Controllers
         }
 
         [SwaggerOperation(Summary = "Get elevators for a building")]
-        [HttpDelete("{id}/elevators")]
+        [HttpGet("{id}/elevators")]
         public async Task<IEnumerable<ElevatorDTO>> GetElevators(int id)
         {
             var elevators = await _buildingRepository.GetElevators(id);
