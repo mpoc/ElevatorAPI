@@ -25,7 +25,7 @@ namespace ElevatorAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Elevator>> Get(int id)
         {
-            var elevator = await _elevatorManagerService.Get(id);
+            var elevator = await _elevatorManagerService.GetWithBuilding(id);
 
             if (elevator == null)
             {
