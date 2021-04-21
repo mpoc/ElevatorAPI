@@ -46,3 +46,16 @@ To experiment with the project, you could:
 1. Use the `POST ​/api​/buildings` endpoint to create a building with elevators.
 1. Choose an elevator and use its id to call the elevator form a floor to a floor using the endpoint `GET ​/api​/elevators​/{id}​/call`.
 1. Give the id of the elevator to the `GET ​/api​/logs` endpoint to see a history of its actions.
+
+For elevators, the `DoorStatus` property represents this:
+
+    0 - Closed
+    1 - Open
+    2 - Closing
+    3 - Opening
+
+The `ElevatorStatus` property represents this:
+
+    0 - Idle
+    1 - MovingUp
+    2 - MovingDown
