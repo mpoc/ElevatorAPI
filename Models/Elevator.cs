@@ -14,5 +14,14 @@ namespace ElevatorAPI.Models
         
         public int BuildingId { get; set; }
         public Building Building { get; set; }
+
+        public Elevator(Building building)
+        {
+            DoorStatus = DoorStatus.Closed;
+            ElevatorStatus = ElevatorStatus.Idle;
+            AtFloor = 0;
+            Busy = false;
+            Building = building;
+        }
     }
 }
