@@ -9,6 +9,7 @@ namespace ElevatorAPI.Repositories
     public interface ILogRepository
     {
         Task<IEnumerable<Log>> Get();
+        Task<IEnumerable<Log>> GetWithElevators();
         Task<Log> Get(int id);
         Task<IEnumerable<Log>> GetByElevator(int elevatorId);
         Task<Log> CreateElevatorCalledLogEntry(Elevator elevator, int fromFloor, int toFloor);

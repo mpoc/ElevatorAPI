@@ -1,4 +1,5 @@
 using ElevatorAPI.Models;
+using ElevatorAPI.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,11 @@ namespace ElevatorAPI.Repositories
             return await _context.Logs.ToListAsync();
         }
 
+        public async Task<IEnumerable<Log>> GetWithElevators()
+        {
+            return await _context.Logs.Include(l => l.Elevator).ToListAsync();
+        }
+
         public async Task<Log> Get(int id)
         {
             return await _context.Logs.FindAsync(id);
@@ -29,7 +35,7 @@ namespace ElevatorAPI.Repositories
         // Gets all the logs associated with a certain elevator
         public async Task<IEnumerable<Log>> GetByElevator(int elevatorId)
         {
-            return await _context.Logs.Where(log => log.Elevator.ElevatorId == elevatorId).ToListAsync();
+            return await _context.Logs.Include(l => l.Elevator).Where(l => l.Elevator.ElevatorId == elevatorId).ToListAsync();
         }
 
         // Creates new log entry for an elevator with a specified message
