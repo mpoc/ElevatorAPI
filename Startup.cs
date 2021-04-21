@@ -38,9 +38,7 @@ namespace ElevatorAPI
 
             services.AddDbContext<ElevatorAPIContext>(o => o.UseSqlite("Data source=database.db"));
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
