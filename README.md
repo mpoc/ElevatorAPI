@@ -24,6 +24,7 @@ It can be seen after running the project at http://localhost:5000/swagger/index.
 ### Logs
 
 1. `GET ​/api​/logs` Get all logs OR get all logs for a specific elevator id (if `elevatorId` is specified).
+Note: the elevator object in the response represents the current state of the elevator, not the state at the point of the action.
 
 ## Run
 
@@ -37,3 +38,11 @@ It can be seen after running the project at http://localhost:5000/swagger/index.
 
     dotnet publish -c Release
     dotnet ./bin/Release/net5.0/ElevatorAPI.dll
+
+## Instructions
+
+To experiment with the project, you could:
+
+1. Use the `POST ​/api​/buildings` endpoint to create a building with elevators.
+1. Choose an elevator and use its id to call the elevator form a floor to a floor using the endpoint `GET ​/api​/elevators​/{id}​/call`.
+1. Give the id of the elevator to the `GET ​/api​/logs` endpoint to see a history of its actions.
